@@ -92,13 +92,13 @@ cloudinary.config(
 
 # ---------------- UPLOAD FILES ----------------
 
-elif menu == "Upload Files":
+    elif menu == "Upload Files":
 
-    st.subheader(
+        st.subheader(
         "Upload Files"
-    )
+        )
 
-    uploaded_file = st.file_uploader(
+        uploaded_file = st.file_uploader(
         "Upload Files",
         type=[
             "pdf",
@@ -107,26 +107,26 @@ elif menu == "Upload Files":
             "jpg",
             "jpeg",
             "png"
-        ]
-    )
+            ]
+        )
 
-    if uploaded_file:
+        if uploaded_file:
 
-        st.success(
+            st.success(
             "File Selected Successfully"
         )
 
-        st.write(
+            st.write(
             "File Name:",
             uploaded_file.name
         )
 
-        st.write(
+            st.write(
             "File Type:",
             uploaded_file.type
         )
 
-        st.write(
+            st.write(
             "File Size:",
             uploaded_file.size,
             "bytes"
