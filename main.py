@@ -1,5 +1,15 @@
 import streamlit as st
 from db_c import conn,cursor
+import cloudinary
+import cloudinary.uploader
+
+# CLOUDINARY CONFIG
+
+cloudinary.config(
+    cloud_name=st.secrets["CLOUD_NAME"],
+    api_key=st.secrets["API_KEY"],
+    api_secret=st.secrets["API_SECRET"]
+)
 
 # SESSION
 if "user" not in st.session_state:
@@ -42,9 +52,6 @@ def signup_inputs():
 
     return name,email,password
 
-
-
-
 # ---------------- DASHBOARD ----------------
 
 def dashboard():
@@ -79,105 +86,91 @@ def dashboard():
 
     # ---------------- UPLOAD FILES ----------------
 
-import cloudinary
-import cloudinary.uploader
-
-# CLOUDINARY CONFIG
-
-cloudinary.config(
-    cloud_name=st.secrets["CLOUD_NAME"],
-    api_key=st.secrets["API_KEY"],
-    api_secret=st.secrets["API_SECRET"]
-)
-
-# ---------------- UPLOAD FILES ----------------
-
     elif menu == "Upload Files":
 
         st.subheader(
-        "Upload Files"
+            "Upload Files"
         )
 
         uploaded_file = st.file_uploader(
-        "Upload Files",
-        type=[
-            "pdf",
-            "mp3",
-            "mp4",
-            "jpg",
-            "jpeg",
-            "png"
+            "Upload Files",
+            type=[
+                "pdf",
+                "mp3",
+                "mp4",
+                "jpg",
+                "jpeg",
+                "png"
             ]
         )
 
         if uploaded_file:
 
             st.success(
-            "File Selected Successfully"
-        )
-
-            st.write(
-            "File Name:",
-            uploaded_file.name
-        )
-
-            st.write(
-            "File Type:",
-            uploaded_file.type
-        )
-
-            st.write(
-            "File Size:",
-            uploaded_file.size,
-            "bytes"
-        )
-
-        # ---------------- PREVIEW ----------------
-
-        # PDF
-        if uploaded_file.type == "application/pdf":
-
-            st.info("PDF File")
-
-
-        # AUDIO
-        elif "audio" in uploaded_file.type:
-
-            st.audio(uploaded_file)
-
-        # VIDEO
-        elif "video" in uploaded_file.type:
-
-            st.video(uploaded_file)
-
-        # IMAGE
-        elif "image" in uploaded_file.type:
-
-            st.image(
-                uploaded_file,
-                width=300
-            )
-
-        # ---------------- CLOUDINARY UPLOAD ----------------
-
-        if st.button("Upload To Cloudinary"):
-
-            result = cloudinary.uploader.upload(
-                uploaded_file,
-                resource_type="auto"
-            )
-
-            file_url = result["secure_url"]
-
-            st.success(
-                "File Uploaded Successfully"
+                "File Selected Successfully"
             )
 
             st.write(
-                "Cloudinary URL:",file_url
+                "File Name:",
+                uploaded_file.name
             )
 
-            st.code(file_url)
+            st.write(
+                "File Type:",
+                uploaded_file.type
+            )
+
+            st.write(
+                "File Size:",
+                uploaded_file.size,
+                "bytes"
+            )
+
+            # ---------------- PREVIEW ----------------
+
+            # PDF
+            if uploaded_file.type == "application/pdf":
+
+                st.info("PDF File")
+
+            # AUDIO
+            elif "audio" in uploaded_file.type:
+
+                st.audio(uploaded_file)
+
+            # VIDEO
+            elif "video" in uploaded_file.type:
+
+                st.video(uploaded_file)
+
+            # IMAGE
+            elif "image" in uploaded_file.type:
+
+                st.image(
+                    uploaded_file,
+                    width=300
+                )
+
+            # ---------------- CLOUDINARY UPLOAD ----------------
+
+            if st.button("Upload To Cloudinary"):
+
+                result = cloudinary.uploader.upload(
+                    uploaded_file,
+                    resource_type="auto"
+                )
+
+                file_url = result["secure_url"]
+
+                st.success(
+                    "File Uploaded Successfully"
+                )
+
+                st.write(
+                    "Cloudinary URL:"
+                )
+
+                st.code(file_url)
 
     # ---------------- VIEW FILES ----------------
 
@@ -202,6 +195,7 @@ cloudinary.config(
         )
 
         st.rerun()
+
 # ---------------- MAIN ----------------
 
 if st.session_state.user is None:
@@ -316,10 +310,5 @@ if st.session_state.user is None:
                     )
 
 else:
+
     dashboard()
-
-
-
-    # dxfzhisem cloudname
-    # 543988112976599 key 
-    # jjiOBtDPJgT2one9QbAiDDSE6ik secret
